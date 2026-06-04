@@ -1,0 +1,55 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  background-color: #1a1a2e;
+  color: white;
+
+  .nav-brand a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+
+  .nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    button {
+      padding: 0.4rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background: white;
+        color: #1a1a2e;
+      }
+    }
+  }
+}

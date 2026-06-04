@@ -1,9 +1,18 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.scss',
+  styleUrl: './navbar.scss'
 })
-export class Navbar {}
+export class Navbar {
+  // temporary hardcoded values for UI development
+  isLoggedIn = true;
+  isAdmin = true;
+  username = 'Anna';
+
+  login(): void {}
+  logout(): void {}
+}

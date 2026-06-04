@@ -1,1 +1,30 @@
-<p>navbar works!</p>
+<nav>
+  <div class="nav-brand">
+    <!-- clicking the logo goes to /books -->
+    <a routerLink="/books">📚 Pocket Library</a>
+  </div>
+
+  <div class="nav-links">
+    @if (isLoggedIn) {
+      <!-- visible to all logged in users -->
+      <a routerLink="/books">Books</a>
+      <a routerLink="/friends">Friends</a>
+      <a routerLink="/quiz">Quiz</a>
+      <a routerLink="/recommendations">Recommendations</a>
+
+      <!-- only visible to admins -->
+      @if (isAdmin) {
+        <a routerLink="/admin">Admin</a>
+      }
+    }
+  </div>
+
+  <div class="nav-auth">
+    @if (isLoggedIn) {
+      <span>{{ username }}</span>
+      <button (click)="logout()">Logout</button>
+    } @else {
+      <button (click)="login()">Login</button>
+    }
+  </div>
+</nav>
