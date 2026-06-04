@@ -1,1 +1,61 @@
-<p>book-list works!</p>
+<div class="book-list-container">
+
+  <div class="book-list-header">
+    <h1>My Library</h1>
+
+    <!-- only admins see the Add Book button -->
+    @if (isAdmin) {
+      <a routerLink="/books/new" class="btn-primary">Add Book</a>
+    }
+  </div>
+
+  <!-- show spinner while loading -->
+  @if (isLoading) {
+    <div class="loading">Loading books...</div>
+  }
+
+  <!-- show message if no books found -->
+  @if (!isLoading && books.length === 0) {
+    <div class="empty">No books found. Add your first book!</div>
+  }
+
+  <!-- book cards grid -->
+  @if (!isLoading && books.length > 0) {
+    <div class="books-grid">
+      @for (book of books; track book.id) {
+        <div class="book-card">
+
+          <div class="book-card-body">
+            <h2>{{ book.title }}</h2>
+            <p class="author">by {{ book.author }}</p>
+
+            <!-- progress bar -->
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                [style.width.%]="book.progress">
+              </div>
+            </div>
+            <p class="progress-text">
+              {{ book.pagesRead }} / {{ book.totalPages }} pages
+              ({{ book.progress | number:'1.0-0' }}%)
+            </p>
+
+            <!-- rating -->
+            @if (book.rating) {
+              <p class="rating"> {{ book.rating }}/10</p>
+            }
+          </div>
+
+          <div class="book-card-footer">
+            <a [routerLink]="['/books', book.id]" class="btn-secondary">
+              View Details
+            </a>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>
