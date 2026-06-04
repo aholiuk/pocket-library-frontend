@@ -62,7 +62,7 @@
         <h2>Rating</h2>
 
         @if (book.rating) {
-          <p class="current-rating">Current rating: ⭐ {{ book.rating }}/10</p>
+          <p class="current-rating">Current rating: {{ book.rating }}/10</p>
         } @else {
           <p class="no-rating">Not rated yet</p>
         }
