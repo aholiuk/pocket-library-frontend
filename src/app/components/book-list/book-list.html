@@ -1,60 +1,62 @@
-<div class="book-list-container">
+<div class="library-container">
 
-  <div class="book-list-header">
+  <div class="library-header">
     <h1>My Library</h1>
-
-    <!-- only admins see the Add Book button -->
-    @if (isAdmin) {
-      <a routerLink="/books/new" class="btn-primary">Add Book</a>
-    }
   </div>
 
-  <!-- show spinner while loading -->
   @if (isLoading) {
-    <div class="loading">Loading books...</div>
+    <div class="loading">Loading your library...</div>
   }
 
-  <!-- show message if no books found -->
-  @if (!isLoading && books.length === 0) {
-    <div class="empty">No books found. Add your first book!</div>
-  }
+  <!-- bookshelf -->
+  @if (!isLoading) {
+    <div class="bookshelf">
 
-  <!-- book cards grid -->
-  @if (!isLoading && books.length > 0) {
-    <div class="books-grid">
-      @for (book of books; track book.id) {
-        <div class="book-card">
+      <div class="shelf">
+        @for (book of books; track book.id; let i = $index) {
+          <div
+            class="book-spine"
+            [style.background-color]="getSpineColor(i)"
+            [style.height.px]="getSpineHeight(i)"
+            [style.width.px]="getSpineWidth(book.totalPages)"
+            (mouseenter)="hoveredBookId = book.id!"
+            (mouseleave)="hoveredBookId = null"
+            (click)="openBook(book.id!)"
+          >
+            <!-- vertical title on the spine -->
+            <span class="spine-title">{{ book.title }}</span>
 
-          <div class="book-card-body">
-            <h2>{{ book.title }}</h2>
-            <p class="author">by {{ book.author }}</p>
-
-            <!-- progress bar -->
-            <div class="progress-bar">
-              <div
-                class="progress-fill"
-                [style.width.%]="book.progress">
+            <!-- hover card that appears above the book -->
+            @if (hoveredBookId === book.id) {
+              <div class="hover-card">
+                <h3>{{ book.title }}</h3>
+                <p class="hover-author">by {{ book.author }}</p>
+                <div class="hover-progress-bar">
+                  <div
+                    class="hover-progress-fill"
+                    [style.width.%]="book.progress">
+                  </div>
+                </div>
+                <p class="hover-pages">
+                  {{ book.pagesRead }} / {{ book.totalPages }} pages
+                </p>
+                <p class="hover-hint">Click to open</p>
               </div>
-            </div>
-            <p class="progress-text">
-              {{ book.pagesRead }} / {{ book.totalPages }} pages
-              ({{ book.progress | number:'1.0-0' }}%)
-            </p>
-
-            <!-- rating -->
-            @if (book.rating) {
-              <p class="rating"> {{ book.rating }}/10</p>
             }
           </div>
+        }
 
-          <div class="book-card-footer">
-            <a [routerLink]="['/books', book.id]" class="btn-secondary">
-              View Details
-            </a>
+        <!-- add book placeholder spine for admins -->
+        @if (isAdmin) {
+          <div class="book-spine book-spine--add" (click)="openBook(0)">
+            <span class="spine-title">+</span>
           </div>
+        }
+      </div>
 
-        </div>
-      }
+      <!-- shelf plank -->
+      <div class="shelf-plank"></div>
+
     </div>
   }
 

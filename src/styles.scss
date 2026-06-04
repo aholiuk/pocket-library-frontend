@@ -5,9 +5,9 @@
 }
 
 body {
-  font-family:'Times New Roman', Times, serif;
-  background-color: #DCB894;
-  color: #e0e0e0;
+  font-family: 'Times New Roman', serif;
+  background-color: #c4a882;
+  color: #2c1810;
   min-height: 100vh;
 }
 
@@ -24,4 +24,9 @@ a {
 
 button {
   cursor: pointer;
+  font-family: inherit;
+}
+
+h1, h2, h3 {
+  color: #8b4513;
 }
