@@ -1,1 +1,57 @@
-<p>book-form works!</p>
+<div class="form-container">
+
+  <button class="btn-back" (click)="cancel()">← Back to Library</button>
+
+  <div class="form-card">
+
+    <h1 class="form-title">
+      {{ isEditMode ? 'Edit Book' : 'Add New Book' }}
+    </h1>
+
+    <div class="page-divider"></div>
+
+    @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+    }
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="book.title"
+        placeholder="Enter book title"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input
+        id="author"
+        type="text"
+        [(ngModel)]="book.author"
+        placeholder="Enter author name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="totalPages">Total Pages</label>
+      <input
+        id="totalPages"
+        type="number"
+        [(ngModel)]="book.totalPages"
+        placeholder="Number of pages"
+        min="1"
+      />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button class="btn-save" (click)="save()">
+        {{ isEditMode ? 'Save Changes' : 'Add Book' }}
+      </button>
+    </div>
+
+  </div>
+
+</div>
