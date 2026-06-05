@@ -1,1 +1,39 @@
-<p>recommendations works!</p>
+<div class="recommendations-container">
+
+  <h1>Your Recommendations</h1>
+  <p class="subtitle">Based on your reading preferences</p>
+
+  @if (isLoading) {
+    <div class="loading">
+      <p>Finding your perfect books...</p>
+    </div>
+  }
+
+  @if (!isLoading && recommendations.length === 0) {
+    <div class="empty-card">
+      <p>No recommendations yet.</p>
+      <p>Take the quiz first to get personalized suggestions!</p>
+      <button class="btn-primary" (click)="goToQuiz()">Take the Quiz</button>
+    </div>
+  }
+
+  @if (!isLoading && recommendations.length > 0) {
+    <div class="recommendations-list">
+      @for (book of recommendations; track book; let i = $index) {
+        <div class="recommendation-card">
+          <div class="rec-number">{{ i + 1 }}</div>
+          <div class="rec-info">
+            <h3>{{ book }}</h3>
+            <p>Recommended for you</p>
+          </div>
+          <div class="rec-icon">📖</div>
+        </div>
+      }
+    </div>
+
+    <button class="btn-retake" (click)="goToQuiz()">
+      Retake Quiz
+    </button>
+  }
+
+</div>
