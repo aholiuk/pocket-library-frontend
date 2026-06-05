@@ -1,1 +1,41 @@
-<p>admin works!</p>
+<div class="admin-container">
+
+  <h1>Admin Panel</h1>
+  <p class="subtitle">Manage registered users</p>
+
+  @if (isLoading) {
+    <div class="loading">Loading users...</div>
+  }
+
+  @if (!isLoading && users.length === 0) {
+    <div class="empty">No users found.</div>
+  }
+
+  @if (!isLoading && users.length > 0) {
+    <div class="users-table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Avatar</th>
+            <th>Username</th>
+            <th>Keycloak ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.keycloakId) {
+            <tr>
+              <td>
+                <div class="user-avatar">
+                  {{ user.username.charAt(0) }}
+                </div>
+              </td>
+              <td class="username">{{ user.username }}</td>
+              <td class="keycloak-id">{{ user.keycloakId }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
