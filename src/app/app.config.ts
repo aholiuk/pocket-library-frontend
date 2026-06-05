@@ -1,7 +1,7 @@
 import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { provideHttpClient, withInterceptorsFromDi, } from '@angular/common/http';
+import { KeycloakAngularModule, KeycloakService, } from 'keycloak-angular';
 import { routes } from './app.routes';
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -18,10 +18,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
         silentCheckSsoRedirectUri:
           window.location.origin + '/silent-check-sso.html'
       }
-    }).then((authenticated) => {
-      console.log('Keycloak initialized, authenticated:', authenticated);
-    }).catch((err) => {
-      console.error('Keycloak init failed:', err);
     });
 }
 

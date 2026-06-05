@@ -23,10 +23,8 @@
             (mouseleave)="hoveredBookId = null"
             (click)="openBook(book.id!)"
           >
-            <!-- vertical title on the spine -->
             <span class="spine-title">{{ book.title }}</span>
 
-            <!-- hover card that appears above the book -->
             @if (hoveredBookId === book.id) {
               <div class="hover-card">
                 <h3>{{ book.title }}</h3>
@@ -46,15 +44,13 @@
           </div>
         }
 
-        <!-- add book placeholder spine for admins -->
-        @if (isAdmin) {
+        @if (isLoggedIn) {
           <div class="book-spine book-spine--add" (click)="openBook(0)">
             <span class="spine-title">+</span>
           </div>
         }
       </div>
 
-      <!-- shelf plank -->
       <div class="shelf-plank"></div>
 
     </div>
