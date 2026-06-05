@@ -4,7 +4,7 @@ import { BookList } from './components/book-list/book-list';
 import { BookDetail } from './components/book-detail/book-detail';
 import { BookForm } from './components/book-form/book-form';
 import { FriendList } from './components/friend-list/friend-list';
-import { Quiz } from './components/quiz/quiz';
+import { QuizComponent } from './components/quiz/quiz';
 import { Recommendations } from './components/recommendations/recommendations';
 import { Admin } from './components/admin/admin';
 
@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'books/:id', component: BookDetail },
   { path: 'books/:id/edit', component: BookForm },
   { path: 'friends', component: FriendList },
-  { path: 'quiz', component: Quiz },
+  { path: 'quiz', component: QuizComponent },
   { path: 'recommendations', component: Recommendations },
   { path: 'admin', component: Admin },
   { path: '**', redirectTo: 'books' }

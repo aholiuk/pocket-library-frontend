@@ -1,1 +1,76 @@
-<p>quiz works!</p>
+<div class="quiz-container">
+
+  @if (!submitted) {
+
+    <h1>Reading Quiz</h1>
+    <p class="subtitle">Answer a few questions and we'll recommend your next book</p>
+
+    <div class="quiz-card">
+
+      @if (errorMessage) {
+        <p class="error-msg">{{ errorMessage }}</p>
+      }
+
+      <!-- question 1 -->
+      <div class="question">
+        <label class="question-label">What was the last book you read?</label>
+        <input
+          type="text"
+          [(ngModel)]="quiz.lastBookRead"
+          placeholder="Enter book title"
+        />
+      </div>
+
+      <!-- question 2 -->
+      <div class="question">
+        <label class="question-label">Did you enjoy it?</label>
+        <div class="toggle-row">
+          <button
+            class="toggle-btn"
+            [class.active]="quiz.likedLastBook === true"
+            (click)="quiz.likedLastBook = true">
+            👍 Yes
+          </button>
+          <button
+            class="toggle-btn"
+            [class.active]="quiz.likedLastBook === false"
+            (click)="quiz.likedLastBook = false">
+            👎 No
+          </button>
+        </div>
+      </div>
+
+      <!-- question 3 -->
+      <div class="question">
+        <label class="question-label">What is your favorite genre?</label>
+        <div class="genre-grid">
+          @for (genre of genres; track genre) {
+            <button
+              class="genre-btn"
+              [class.active]="quiz.favoriteGenre === genre"
+              (click)="quiz.favoriteGenre = genre">
+              {{ genre }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <button class="btn-submit" (click)="submit()">
+        Get Recommendations →
+      </button>
+
+    </div>
+
+  } @else {
+
+    <!-- success state -->
+    <div class="success-card">
+      <div class="success-icon">📚</div>
+      <h2>Quiz Complete!</h2>
+      <p>Finding your perfect books...</p>
+      <p class="redirect-msg">Redirecting to recommendations...</p>
+    </div>
+
+  }
+
+</div>
