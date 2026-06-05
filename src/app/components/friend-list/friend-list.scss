@@ -1,0 +1,159 @@
+.friends-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  h1 {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    color: #8b4513;
+    margin-bottom: 2rem;
+  }
+}
+
+.add-friend-card {
+  background: #6b1a1a;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+
+  h2 {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: #e8c99a;
+    margin-bottom: 1rem;
+  }
+}
+
+.add-row {
+  display: flex;
+  gap: 0.75rem;
+
+  input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(196, 168, 130, 0.4);
+    border-radius: 6px;
+    background: #4a1a1a;
+    color: #e8c99a;
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+
+    &::placeholder {
+      color: rgba(196, 168, 130, 0.4);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #c4a882;
+    }
+  }
+}
+
+.btn-primary {
+  background: #8b4513;
+  color: #f5e6d0;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #6b3410;
+  }
+}
+
+.error-msg {
+  color: #f5a0a0;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.success-msg {
+  color: #7cb87c;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.loading, .empty {
+  text-align: center;
+  color: #8b4513;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+.friends-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.friend-card {
+  background: #6b1a1a;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateX(4px);
+  }
+}
+
+.friend-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #8b4513;
+  color: #f5e6d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.friend-info {
+  flex: 1;
+
+  h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    color: #e8c99a;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    font-family: 'Georgia', serif;
+    font-size: 0.8rem;
+    color: #c4a882;
+  }
+}
+
+.btn-bookshelf {
+  background: transparent;
+  border: 1px solid #c4a882;
+  color: #c4a882;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #c4a882;
+    color: #2c1810;
+  }
+}
