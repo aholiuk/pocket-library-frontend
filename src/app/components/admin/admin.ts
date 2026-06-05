@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -8,18 +9,21 @@ import { User } from '../../models/user.model';
   styleUrl: './admin.scss'
 })
 export class Admin implements OnInit {
+  private userService = inject(UserService);
 
   users: User[] = [];
   isLoading = true;
 
   ngOnInit(): void {
-    // dummy data — will be replaced with userService.getAll() later
-    this.users = [
-      { keycloakId: 'user-1', username: 'Anna' },
-      { keycloakId: 'user-2', username: 'Maria' },
-      { keycloakId: 'user-3', username: 'Lena' },
-      { keycloakId: 'user-4', username: 'Sophie' },
-    ];
-    this.isLoading = false;
+    this.userService.getAll().subscribe({
+      next: (data) => {
+        this.users = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load users', err);
+        this.isLoading = false;
+      }
+    });
   }
 }

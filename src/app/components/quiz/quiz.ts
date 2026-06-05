@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Quiz } from '../../models/quiz.model';
+import { QuizService } from '../../services/quiz.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-quiz',
@@ -11,6 +13,8 @@ import { Quiz } from '../../models/quiz.model';
 })
 export class QuizComponent {
   private router = inject(Router);
+  private quizService = inject(QuizService);
+  private keycloak = inject(KeycloakService);
 
   submitted = false;
   errorMessage = '';
@@ -40,13 +44,18 @@ export class QuizComponent {
     }
 
     this.errorMessage = '';
-    // will call quizService.submit() later
-    console.log('Quiz submitted:', this.quiz);
-    this.submitted = true;
+    // get userId from Keycloak token
+    const token = this.keycloak.getKeycloakInstance().tokenParsed;
+    this.quiz.userId = token?.['sub'] ?? '';
 
-    // navigate to recommendations after short delay
-    setTimeout(() => {
-      this.router.navigate(['/recommendations']);
-    }, 2000);
+    this.quizService.submit(this.quiz).subscribe({
+      next: () => {
+        this.submitted = true;
+        setTimeout(() => this.router.navigate(['/recommendations']), 2000);
+      },
+      error: () => {
+        this.errorMessage = 'Failed to submit quiz. Please try again.';
+      }
+    });
   }
 }
