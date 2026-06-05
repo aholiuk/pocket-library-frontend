@@ -38,24 +38,20 @@ export class BookForm implements OnInit {
   ];
 
   ngOnInit(): void {
-    // check if we are in edit mode by looking at the URL
-    // /books/new → create mode
-    // /books/3/edit → edit mode
     const idParam = this.route.snapshot.paramMap.get('id');
 
     if (idParam && idParam !== 'new') {
       this.isEditMode = true;
       this.bookId = Number(idParam);
-      // load existing book data — will use bookService.getById() later
-      const existing = this.dummyBooks.find(b => b.id === this.bookId);
-      if (existing) {
-        this.book = { ...existing }; // spread to avoid mutating the original
-      }
+
+      this.bookService.getById(this.bookId).subscribe({
+        next: (data) => this.book = { ...data },
+        error: (err) => console.error('Failed to load book', err)
+      });
     }
   }
 
   save(): void {
-    // basic validation
     if (!this.book.title.trim()) {
       this.errorMessage = 'Title is required.';
       return;
@@ -70,17 +66,25 @@ export class BookForm implements OnInit {
     }
 
     this.errorMessage = '';
+    this.isLoading = true;
 
     if (this.isEditMode && this.bookId) {
-      // will call bookService.update() later
-      console.log('Updating book:', this.book);
+      this.bookService.update(this.bookId, this.book).subscribe({
+        next: () => this.router.navigate(['/books']),
+        error: () => {
+          this.errorMessage = 'Failed to update book.';
+          this.isLoading = false;
+        }
+      });
     } else {
-      // will call bookService.create() later
-      console.log('Creating book:', this.book);
+      this.bookService.create(this.book).subscribe({
+        next: () => this.router.navigate(['/books']),
+        error: () => {
+          this.errorMessage = 'Failed to create book.';
+          this.isLoading = false;
+        }
+      });
     }
-
-    // navigate back to book list after save
-    this.router.navigate(['/books']);
   }
 
   cancel(): void {
