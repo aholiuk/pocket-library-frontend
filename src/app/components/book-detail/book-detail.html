@@ -1,91 +1,110 @@
 <div class="detail-container">
 
   @if (isLoading) {
-    <div class="loading">Loading book...</div>
+    <div class="loading">Opening book...</div>
   }
 
   @if (!isLoading && book) {
-    <!-- back button -->
+
     <button class="btn-back" (click)="goBack()">← Back to Library</button>
 
-    <div class="detail-card">
+    <div class="scene" [class.is-open]="isOpen">
 
-      <!-- book header -->
-      <div class="detail-header">
-        <div>
-          <h1>{{ book.title }}</h1>
-          <p class="author">by {{ book.author }}</p>
-        </div>
+      <!-- the closed book sitting on the table -->
+      <div class="book-closed">
+        <div class="book-cover-top"></div>
+        <div class="book-spine-vis"></div>
+      </div>
 
-        <!-- admin buttons -->
-        @if (isAdmin) {
-          <div class="admin-actions">
-            <a [href]="'/books/' + book.id + '/edit'" class="btn-edit">Edit</a>
-            <button class="btn-delete" (click)="deleteBook()">Delete</button>
+      <!-- the open book — two pages -->
+      <div class="book-open">
+
+        <!-- left page -->
+        <div class="page page-left">
+          <div class="page-content">
+            <h1 class="book-title">{{ book.title }}</h1>
+            <p class="book-author">{{ book.author }}</p>
+            <div class="page-divider"></div>
+
+            <div class="info-row">
+              <span class="info-label">Total Pages</span>
+              <span class="info-value">{{ book.totalPages }}</span>
+            </div>
+
+            <div class="info-row">
+              <span class="info-label">Reading Progress</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="book.progress"></div>
+            </div>
+            <p class="progress-text">{{ book.pagesRead }} / {{ book.totalPages }} pages ({{ book.progress }}%)</p>
+
+            <div class="update-row">
+              <input
+                type="number"
+                [(ngModel)]="newPagesRead"
+                [min]="0"
+                [max]="book.totalPages"
+                placeholder="Pages read"
+              />
+              <button class="btn-save" (click)="updateProgress()">Update</button>
+            </div>
+            @if (progressMessage) {
+              <p class="success-msg">{{ progressMessage }}</p>
+            }
+
+            <div class="page-divider"></div>
+
+            <span class="info-label">Your Rating</span>
+            <div class="stars">
+              @for (star of getStars(); track star) {
+                <span
+                  class="star"
+                  [class.filled]="star <= (book.rating ?? 0)"
+                  (click)="setRating(star)"
+                >★</span>
+              }
+            </div>
+            <p class="rating-text">{{ book.rating ?? 0 }} / 10</p>
+            @if (ratingMessage) {
+              <p class="success-msg">{{ ratingMessage }}</p>
+            }
+
+            @if (isAdmin) {
+              <div class="page-divider"></div>
+              <div class="admin-row">
+                <a [href]="'/books/' + book.id + '/edit'" class="btn-edit">Edit</a>
+                <button class="btn-delete" (click)="deleteBook()">Delete</button>
+              </div>
+            }
           </div>
-        }
-      </div>
+          <span class="page-number right">1</span>
+        </div>
 
-      <!-- progress section -->
-      <div class="section">
-        <h2>Reading Progress</h2>
+        <!-- right page -->
+        <div class="page page-right">
+          <div class="page-content">
+            <h2 class="section-title">Reviews</h2>
 
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            [style.width.%]="book.progress">
+            @for (review of reviews; track review.username) {
+              <div class="review">
+                <p class="review-text">"{{ review.text }}"</p>
+                <p class="review-author">— {{ review.username }}</p>
+              </div>
+            }
+
+            @if (reviews.length === 0) {
+              <p class="no-reviews">No reviews yet. Be the first!</p>
+            }
+
+            <div class="page-divider"></div>
+            <h3 class="section-title">Write a Review</h3>
+            <textarea class="review-input" placeholder="Share your thoughts..."></textarea>
+            <button class="btn-save">Post Review</button>
           </div>
+          <span class="page-number left">2</span>
         </div>
-        <p class="progress-text">
-          {{ book.pagesRead }} / {{ book.totalPages }} pages
-          ({{ book.progress }}%)
-        </p>
 
-        <!-- update progress -->
-        <div class="update-row">
-          <label>Update pages read:</label>
-          <input
-            type="number"
-            [(ngModel)]="newPagesRead"
-            [min]="0"
-            [max]="book.totalPages"
-          />
-          <button class="btn-primary" (click)="updateProgress()">Save</button>
-        </div>
-        @if (progressMessage) {
-          <p class="success-message">{{ progressMessage }}</p>
-        }
-      </div>
-
-      <!-- rating section -->
-      <div class="section">
-        <h2>Rating</h2>
-
-        @if (book.rating) {
-          <p class="current-rating">Current rating: {{ book.rating }}/10</p>
-        } @else {
-          <p class="no-rating">Not rated yet</p>
-        }
-
-        <div class="update-row">
-          <label>Rate this book (1-10):</label>
-          <input
-            type="number"
-            [(ngModel)]="newRating"
-            [min]="1"
-            [max]="10"
-          />
-          <button class="btn-primary" (click)="rateBook()">Save</button>
-        </div>
-        @if (ratingMessage) {
-          <p class="success-message">{{ ratingMessage }}</p>
-        }
-      </div>
-
-      <!-- reviews placeholder — we'll build this next -->
-      <div class="section">
-        <h2>Reviews</h2>
-        <p class="placeholder">Reviews coming soon...</p>
       </div>
 
     </div>
