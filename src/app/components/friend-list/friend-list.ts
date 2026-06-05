@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Friend } from '../../models/friend.model';
+import { FriendService } from '../../services/friend.service';
 
 @Component({
   selector: 'app-friend-list',
@@ -9,6 +10,7 @@ import { Friend } from '../../models/friend.model';
   styleUrl: './friend-list.scss'
 })
 export class FriendList implements OnInit {
+  private friendService = inject(FriendService);
 
   friends: Friend[] = [];
   isLoading = true;
@@ -16,14 +18,17 @@ export class FriendList implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  // dummy data — will be replaced with friendService.getAll() later
   ngOnInit(): void {
-    this.friends = [
-      { id: 1, user: { keycloakId: 'user-1', username: 'Anna' }, friend: { keycloakId: 'user-2', username: 'Maria' } },
-      { id: 2, user: { keycloakId: 'user-1', username: 'Anna' }, friend: { keycloakId: 'user-3', username: 'Lena' } },
-      { id: 3, user: { keycloakId: 'user-1', username: 'Anna' }, friend: { keycloakId: 'user-4', username: 'Sophie' } },
-    ];
-    this.isLoading = false;
+    this.friendService.getAll().subscribe({
+      next: (data) => {
+        this.friends = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load friends', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   addFriend(): void {
@@ -32,15 +37,21 @@ export class FriendList implements OnInit {
       return;
     }
 
-    // will call friendService.addFriend() later
-    console.log('Adding friend:', this.newFriendId);
-    this.successMessage = 'Friend request sent!';
-    this.newFriendId = '';
-    this.errorMessage = '';
-    setTimeout(() => this.successMessage = '', 3000);
+    this.friendService.addFriend(this.newFriendId).subscribe({
+      next: () => {
+        this.successMessage = 'Friend added!';
+        this.newFriendId = '';
+        this.errorMessage = '';
+        setTimeout(() => this.successMessage = '', 3000);
+        // reload friends list
+        this.ngOnInit();
+      },
+      error: () => {
+        this.errorMessage = 'Failed to add friend.';
+      }
+    });
   }
 
-  // navigate to friend's bookshelf — will implement later
   viewBookshelf(friendId: string): void {
     console.log('View bookshelf of:', friendId);
   }
