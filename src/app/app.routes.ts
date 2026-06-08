@@ -8,6 +8,8 @@ import { QuizComponent } from './components/quiz/quiz';
 import { Recommendations } from './components/recommendations/recommendations';
 import { Admin } from './components/admin/admin';
 import { FriendBookshelf } from './components/friend-bookshelf/friend-bookshelf';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'books', pathMatch: 'full' },
@@ -20,5 +22,7 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent, canActivate: [authGuard] },
   { path: 'recommendations', component: Recommendations, canActivate: [authGuard] },
   { path: 'admin', component: Admin, canActivate: [adminGuard] },
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
   { path: '**', redirectTo: 'books' }
 ];

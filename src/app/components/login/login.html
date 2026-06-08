@@ -1,1 +1,40 @@
-<p>login works!</p>
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Sign in to your Pocket Library</p>
+
+    <div class="page-divider"></div>
+
+    @if (errorMessage) {
+      <p class="error-msg">{{ errorMessage }}</p>
+    }
+
+    <div class="form-group">
+      <label>Username</label>
+      <input
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+        (keyup.enter)="login()"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        (keyup.enter)="login()"
+      />
+    </div>
+
+    <button class="btn-submit" (click)="login()" [disabled]="isLoading">
+      @if (isLoading) { Signing in... } @else { Sign In }
+    </button>
+
+    <p class="switch-link">
+      Don't have an account? <a routerLink="/register">Register here</a>
+    </p>
+  </div>
+</div>
