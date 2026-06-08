@@ -67,7 +67,7 @@
             <h3>{{ friend.friend?.username }}</h3>
           </div>
           <div class="friend-actions">
-            <button class="btn-bookshelf" (click)="viewBookshelf(friend.friend?.keycloakId!)">
+            <button class="btn-bookshelf" (click)="viewBookshelf(friend.friend?.keycloakId!, friend.friend?.username!)">
               Bookshelf
             </button>
             <button class="btn-delete" (click)="deleteFriend(friend.id!)">
@@ -78,5 +78,4 @@
       }
     </div>
   }
-
 </div>

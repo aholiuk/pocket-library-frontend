@@ -1,0 +1,48 @@
+<div class="library-container">
+
+  <button class="btn-back" (click)="goBack()">← Back to Friends</button>
+
+  <div class="library-header">
+    <h1>{{ friendUsername }}'s Library</h1>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading">Loading bookshelf...</div>
+  }
+
+  @if (!isLoading && books.length === 0) {
+    <div class="empty">This friend has no books yet.</div>
+  }
+
+  @if (!isLoading && books.length > 0) {
+    <div class="bookshelf">
+      <div class="shelf">
+        @for (book of books; track book.id; let i = $index) {
+          <div
+            class="book-spine"
+            [style.background-color]="getSpineColor(i)"
+            [style.height.px]="getSpineHeight(i)"
+            [style.width.px]="getSpineWidth(book.totalPages)"
+            (mouseenter)="hoveredBookId = book.id!"
+            (mouseleave)="hoveredBookId = null"
+          >
+            <span class="spine-title">{{ book.title }}</span>
+
+            @if (hoveredBookId === book.id) {
+              <div class="hover-card">
+                <h3>{{ book.title }}</h3>
+                <p class="hover-author">by {{ book.author }}</p>
+                <div class="hover-progress-bar">
+                  <div class="hover-progress-fill" [style.width.%]="book.progress"></div>
+                </div>
+                <p class="hover-pages">{{ book.pagesRead }} / {{ book.totalPages }} pages</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="shelf-plank"></div>
+    </div>
+  }
+
+</div>

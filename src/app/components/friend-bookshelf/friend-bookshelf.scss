@@ -1,0 +1,156 @@
+.library-container {
+  padding: 2rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #8b4513;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-family: 'Georgia', serif;
+  padding: 0;
+
+  &:hover {
+    color: #6b3410;
+    text-decoration: underline;
+  }
+}
+
+.library-header {
+  margin-bottom: 3rem;
+
+  h1 {
+    font-size: 2.5rem;
+    color: #8b4513;
+    font-family: 'Georgia', serif;
+  }
+}
+
+.loading, .empty {
+  text-align: center;
+  color: #8b4513;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+.bookshelf {
+  margin-bottom: 3rem;
+}
+
+.shelf {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 1rem 1.5rem 0 1.5rem;
+  background: #1a0a00;
+  border-radius: 4px 4px 0 0;
+  min-height: 220px;
+  flex-wrap: wrap;
+}
+
+.book-spine {
+  position: relative;
+  border-radius: 3px 0 0 3px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  box-shadow: -3px 0 6px rgba(0,0,0,0.4);
+
+  &:hover {
+    transform: translateY(-12px);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: rgba(0,0,0,0.25);
+    border-radius: 3px 0 0 3px;
+  }
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  color: rgba(255,255,255,0.9);
+  font-size: 0.75rem;
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  max-height: 160px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.hover-card {
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  background: #2c1810;
+  border: 1px solid #8b4513;
+  border-radius: 8px;
+  padding: 0.8rem;
+  z-index: 100;
+  pointer-events: none;
+
+  h3 {
+    font-size: 0.85rem;
+    color: #e8c99a;
+    margin-bottom: 0.25rem;
+    font-family: 'Georgia', serif;
+  }
+
+  .hover-author {
+    font-size: 0.75rem;
+    color: #c4a882;
+    margin-bottom: 0.6rem;
+  }
+
+  .hover-progress-bar {
+    height: 4px;
+    background: #4a2a1a;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+
+    .hover-progress-fill {
+      height: 100%;
+      background: #8b4513;
+      border-radius: 2px;
+    }
+  }
+
+  .hover-pages {
+    font-size: 0.7rem;
+    color: #c4a882;
+  }
+}
+
+.shelf-plank {
+  height: 18px;
+  background: #5c3d1e;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+
+  &::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: #7a5230;
+    border-radius: 0;
+  }
+}

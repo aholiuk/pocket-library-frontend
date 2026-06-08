@@ -4,6 +4,7 @@ import { Friend } from '../../models/friend.model';
 import { User } from '../../models/user.model';
 import { FriendService } from '../../services/friend.service';
 import { KeycloakService } from 'keycloak-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-friend-list',
@@ -15,6 +16,7 @@ export class FriendList implements OnInit {
   private friendService = inject(FriendService);
   private keycloak = inject(KeycloakService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   friends: Friend[] = [];
   isLoading = true;
@@ -111,7 +113,9 @@ export class FriendList implements OnInit {
     return this.friends.some(f => f.friend?.keycloakId === keycloakId);
   }
 
-  viewBookshelf(friendId: string): void {
-    console.log('View bookshelf of:', friendId);
+  viewBookshelf(friendId: string, friendUsername: string): void {
+    this.router.navigate(['/friends', friendId, 'books'], { 
+    queryParams: { username: friendUsername } 
+  });
   }
 }

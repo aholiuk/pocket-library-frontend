@@ -55,4 +55,8 @@ export class BookService {
   rateBook(id: number, rating: number): Observable<Book> {
     return this.http.patch<Book>(`${this.apiUrl}/${id}/rating`, rating, { headers: this.getHeaders() });
   }
+
+  getByUser(keycloakId: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/user/${keycloakId}`, { headers: this.getHeaders() });
+  }
 }
