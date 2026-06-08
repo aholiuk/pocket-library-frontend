@@ -2,22 +2,48 @@
 
   <h1>My Friends</h1>
 
-  <!-- add friend -->
+  <!-- search -->
   <div class="add-friend-card">
-    <h2>Add a Friend</h2>
+    <h2>Find a Friend</h2>
     <div class="add-row">
       <input
         type="text"
-        [(ngModel)]="newFriendId"
-        placeholder="Enter friend's user ID"
+        [(ngModel)]="searchUsername"
+        placeholder="Enter username"
+        (keyup.enter)="searchUser()"
       />
-      <button class="btn-primary" (click)="addFriend()">Add</button>
+      <button class="btn-primary" (click)="searchUser()">Search</button>
     </div>
-    @if (errorMessage) {
-      <p class="error-msg">{{ errorMessage }}</p>
+
+    @if (searchLoading) {
+      <p class="loading-msg">Searching...</p>
     }
+
+    @if (searchError) {
+      <p class="error-msg">{{ searchError }}</p>
+    }
+
+    @if (searchResult) {
+      <div class="search-result">
+        <div class="friend-avatar">{{ searchResult.username.charAt(0) }}</div>
+        <div class="friend-info">
+          <h3>{{ searchResult.username }}</h3>
+        </div>
+        @if (!isAlreadyFriend(searchResult.keycloakId)) {
+          <button class="btn-primary" (click)="addFriend(searchResult.keycloakId)">
+            Add Friend
+          </button>
+        } @else {
+          <span class="already-friends">Already friends ✓</span>
+        }
+      </div>
+    }
+
     @if (successMessage) {
       <p class="success-msg">{{ successMessage }}</p>
+    }
+    @if (errorMessage) {
+      <p class="error-msg">{{ errorMessage }}</p>
     }
   </div>
 
@@ -27,7 +53,7 @@
   }
 
   @if (!isLoading && friends.length === 0) {
-    <div class="empty">No friends yet. Add someone!</div>
+    <div class="empty">No friends yet. Search for someone!</div>
   }
 
   @if (!isLoading && friends.length > 0) {
@@ -39,13 +65,15 @@
           </div>
           <div class="friend-info">
             <h3>{{ friend.friend?.username }}</h3>
-            <p>{{ friend.friend?.keycloakId }}</p>
           </div>
-          <button
-            class="btn-bookshelf"
-            (click)="viewBookshelf(friend.friend?.keycloakId!)">
-            View Bookshelf
-          </button>
+          <div class="friend-actions">
+            <button class="btn-bookshelf" (click)="viewBookshelf(friend.friend?.keycloakId!)">
+              Bookshelf
+            </button>
+            <button class="btn-delete" (click)="deleteFriend(friend.id!)">
+              Remove
+            </button>
+          </div>
         </div>
       }
     </div>

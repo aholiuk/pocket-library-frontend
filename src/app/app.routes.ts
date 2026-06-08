@@ -11,7 +11,7 @@ import { Admin } from './components/admin/admin';
 export const routes: Routes = [
   { path: '', redirectTo: 'books', pathMatch: 'full' },
   { path: 'books', component: BookList, canActivate: [authGuard] },
-  { path: 'books/new', component: BookForm, canActivate: [adminGuard] },
+  { path: 'books/new', component: BookForm, canActivate: [authGuard] },
   { path: 'books/:id', component: BookDetail, canActivate: [authGuard] },
   { path: 'books/:id/edit', component: BookForm, canActivate: [adminGuard] },
   { path: 'friends', component: FriendList, canActivate: [authGuard] },

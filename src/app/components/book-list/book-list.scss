@@ -83,12 +83,16 @@
     box-shadow: none;
     width: 60px !important;
     height: 180px !important;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
 
     .spine-title {
       color: #8b4513;
       font-size: 2rem;
       writing-mode: horizontal-tb;
       transform: none;
+      pointer-events: none;
     }
 
     &:hover {

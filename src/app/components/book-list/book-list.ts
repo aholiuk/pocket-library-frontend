@@ -32,20 +32,26 @@ export class BookList implements OnInit {
 ngOnInit(): void {
   this.isLoggedIn = this.keycloak.isLoggedIn();
 
-setTimeout(() => {
-  this.bookService.getAll().subscribe({
-    next: (data) => {
-      this.books = data;
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    },
-    error: (err) => {
-      console.error('Failed to load books', err);
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }
-  });
-}, 500);
+  // ensure token is valid before making requests
+  this.keycloak.getKeycloakInstance().updateToken(5)
+    .then(() => {
+      this.bookService.getAll().subscribe({
+        next: (data) => {
+          this.books = data;
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Failed to load books', err);
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    })
+    .catch(() => {
+      // token refresh failed — redirect to login
+      this.keycloak.login();
+    });
 }
   getSpineColor(index: number): string {
     return this.spineColors[index % this.spineColors.length];
@@ -64,5 +70,10 @@ setTimeout(() => {
 
   openBook(id: number): void {
     this.router.navigate(['/books', id]);
+  }
+
+  addBook(): void {
+    console.log('addBook called');
+    this.router.navigate(['/books/new']);
   }
 }

@@ -1,7 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Friend } from '../../models/friend.model';
+import { User } from '../../models/user.model';
 import { FriendService } from '../../services/friend.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-friend-list',
@@ -11,45 +13,102 @@ import { FriendService } from '../../services/friend.service';
 })
 export class FriendList implements OnInit {
   private friendService = inject(FriendService);
+  private keycloak = inject(KeycloakService);
+  private cdr = inject(ChangeDetectorRef);
 
   friends: Friend[] = [];
   isLoading = true;
-  newFriendId = '';
-  errorMessage = '';
+
+  searchUsername = '';
+  searchResult: User | null = null;
+  searchError = '';
+  searchLoading = false;
+
   successMessage = '';
+  errorMessage = '';
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.loadFriends();
+    }, 500);
+  }
+
+  loadFriends(): void {
     this.friendService.getAll().subscribe({
       next: (data) => {
         this.friends = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load friends', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  addFriend(): void {
-    if (!this.newFriendId.trim()) {
-      this.errorMessage = 'Please enter a user ID.';
-      return;
-    }
+  searchUser(): void {
+    if (!this.searchUsername.trim()) return;
+    this.searchLoading = true;
+    this.searchResult = null;
+    this.searchError = '';
 
-    this.friendService.addFriend(this.newFriendId).subscribe({
-      next: () => {
-        this.successMessage = 'Friend added!';
-        this.newFriendId = '';
-        this.errorMessage = '';
-        setTimeout(() => this.successMessage = '', 3000);
-        // reload friends list
-        this.ngOnInit();
+    this.friendService.searchByUsername(this.searchUsername).subscribe({
+      next: (user) => {
+        this.searchResult = user;
+        this.searchLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
-        this.errorMessage = 'Failed to add friend.';
+        this.searchError = 'User not found.';
+        this.searchLoading = false;
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  addFriend(friendId: string): void {
+    this.keycloak.getKeycloakInstance().updateToken(5).then(() => {
+      this.friendService.addFriend(friendId).subscribe({
+        next: () => {
+          this.successMessage = 'Friend added!';
+          this.searchResult = null;
+          this.searchUsername = '';
+          setTimeout(() => this.successMessage = '', 3000);
+          this.loadFriends();
+        },
+        error: (err) => {
+          if (err.status === 409) {
+            this.errorMessage = 'You are already friends!';
+          } else if (err.status === 400) {
+            this.errorMessage = 'You cannot add yourself as a friend.';
+          } else {
+            this.errorMessage = 'Could not add friend.';
+          }
+          setTimeout(() => this.errorMessage = '', 3000);
+          this.cdr.detectChanges();
+        }
+      });
+    });
+  }
+
+  deleteFriend(friendshipId: number): void {
+    this.friendService.deleteFriend(friendshipId).subscribe({
+      next: () => {
+        this.successMessage = 'Friend removed.';
+        setTimeout(() => this.successMessage = '', 3000);
+        this.loadFriends();
+      },
+      error: () => {
+        this.errorMessage = 'Could not remove friend.';
+        setTimeout(() => this.errorMessage = '', 3000);
+      }
+    });
+  }
+
+  isAlreadyFriend(keycloakId: string): boolean {
+    return this.friends.some(f => f.friend?.keycloakId === keycloakId);
   }
 
   viewBookshelf(friendId: string): void {
