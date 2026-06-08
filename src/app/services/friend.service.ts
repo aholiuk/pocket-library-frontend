@@ -29,8 +29,11 @@ export class FriendService {
   }
 
   // POST /friends/{friendId} — add a friend by their userId
-  addFriend(friendId: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${friendId}`, null, { headers: this.getHeaders() });
+  addFriend(friendId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${friendId}`, null, {
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
   }
 
   deleteFriend(friendshipId: number): Observable<string> {
