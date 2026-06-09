@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root' // one instance shared across the whole app
@@ -13,12 +14,13 @@ export class BookService {
   private keycloak = inject(KeycloakService);
   // /api prefix is intercepted by proxy and forwarded to localhost:9090
   private apiUrl = '/api/books';
+  private tokenService = inject(TokenService);
 
-    private getHeaders(): HttpHeaders {
-    const token = this.keycloak.getKeycloakInstance().token;
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+  private getHeaders(): HttpHeaders {
+    const token = this.tokenService.getToken() 
+      ?? this.keycloak.getKeycloakInstance()?.token 
+      ?? '';
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
   // GET /books — fetch all books

@@ -1,49 +1,32 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from '../services/token.service';
 
-// This guard checks: is the user logged in at all?
-export const authGuard: CanActivateFn = async () => {
-  const keycloak = inject(KeycloakService);
+export const authGuard: CanActivateFn = () => {
+  const tokenService = inject(TokenService);
   const router = inject(Router);
 
-  // Ask Keycloak: is there a valid token?
-  const isLoggedIn = keycloak.isLoggedIn();
-
-  if (isLoggedIn) {
-    return true; // yes → let them through
+  if (tokenService.isAuthenticated()) {
+    return true;
   }
 
-  // No → send them to Keycloak login page
-  await keycloak.login({
-    redirectUri: window.location.origin // after login, come back to our app
-  });
-
+  router.navigate(['/login']);
   return false;
 };
 
-// This guard checks: is the user an admin?
-export const adminGuard: CanActivateFn = async () => {
-  const keycloak = inject(KeycloakService);
+export const adminGuard: CanActivateFn = () => {
+  const tokenService = inject(TokenService);
   const router = inject(Router);
 
-  const isLoggedIn = keycloak.isLoggedIn();
-
-  if (!isLoggedIn) {
-    await keycloak.login({
-      redirectUri: window.location.origin
-    });
+  if (!tokenService.isAuthenticated()) {
+    router.navigate(['/login']);
     return false;
   }
 
-  // Check if the user has the admin role
-  const isAdmin = keycloak.isUserInRole('admin');
-
-  if (isAdmin) {
-    return true; // yes → let them through
+  if (tokenService.isAdmin()) {
+    return true;
   }
 
-  // Logged in but not admin → redirect to books page
   router.navigate(['/books']);
   return false;
 };

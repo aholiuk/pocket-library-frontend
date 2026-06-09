@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,33 +11,27 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class Navbar implements OnInit {
   private keycloak = inject(KeycloakService);
+  private tokenService = inject(TokenService);
+  private router = inject(Router);
 
   isLoggedIn = false;
   isAdmin = false;
   username = '';
 
-ngOnInit(): void {
-  this.isLoggedIn = this.keycloak.isLoggedIn();
-
-  if (this.isLoggedIn) {
-    try {
-      this.isAdmin = this.keycloak.isUserInRole('admin');
-      // getUsername can throw if profile not loaded — use token instead
-      const token = this.keycloak.getKeycloakInstance().tokenParsed;
-      this.username = token?.['preferred_username'] ?? '';
-    } catch (e) {
-      console.warn('Could not load user profile', e);
+  ngOnInit(): void {
+    this.isLoggedIn = this.tokenService.isAuthenticated();
+    if (this.isLoggedIn) {
+      this.isAdmin = this.tokenService.isAdmin();
+      this.username = this.tokenService.getUsername();
     }
   }
-}
 
   login(): void {
-    this.keycloak.login({
-      redirectUri: window.location.origin
-    });
+    this.router.navigate(['/login']);
   }
 
   logout(): void {
-    this.keycloak.logout(window.location.origin);
+    this.tokenService.clearTokens();
+    window.location.href = '/login';
   }
 }

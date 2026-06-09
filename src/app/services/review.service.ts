@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Review } from '../models/review.model';
 import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,12 @@ export class ReviewService {
   private http = inject(HttpClient);
   private keycloak = inject(KeycloakService);
   private apiUrl = '/api/reviews';
+  private tokenService = inject(TokenService);
 
   private getHeaders(): HttpHeaders {
-    const token = this.keycloak.getKeycloakInstance().token;
+    const token = this.tokenService.getToken() 
+      ?? this.keycloak.getKeycloakInstance()?.token 
+      ?? '';
     return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
@@ -35,8 +39,7 @@ export class ReviewService {
   // POST /reviews?bookId=X — create a review
   // the text goes in the body, bookId goes as a query parameter
   create(bookId: number, text: string): Observable<Review> {
-    return this.http.post<Review>(`${this.apiUrl}?bookId=${bookId}`, text, {
-      headers: { 'Content-Type': 'text/plain' } // backend expects plain string not JSON
-    });
+    const headers = this.getHeaders().set('Content-Type', 'text/plain');
+    return this.http.post<Review>(`${this.apiUrl}?bookId=${bookId}`, text, { headers });
   }
 }

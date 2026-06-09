@@ -12,7 +12,7 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'books', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'books', component: BookList, canActivate: [authGuard] },
   { path: 'books/new', component: BookForm, canActivate: [authGuard] },
   { path: 'books/:id', component: BookDetail, canActivate: [authGuard] },

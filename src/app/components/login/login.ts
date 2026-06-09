@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
   private keycloak = inject(KeycloakService);
+  private tokenService = inject(TokenService);
 
   username = '';
   password = '';
@@ -31,13 +33,14 @@ export class Login {
 
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
-        // store the token in Keycloak instance
+        this.tokenService.setTokens(response.access_token, response.refresh_token);
         const kc = this.keycloak.getKeycloakInstance();
         kc.token = response.access_token;
         kc.refreshToken = response.refresh_token;
-
+        kc.authenticated = true;
+        kc.tokenParsed = JSON.parse(atob(response.access_token.split('.')[1]));
         this.isLoading = false;
-        this.router.navigate(['/books']);
+        window.location.href = '/books';
       },
       error: () => {
         this.errorMessage = 'Invalid username or password.';

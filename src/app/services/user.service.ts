@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { KeycloakService } from 'keycloak-angular';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,12 @@ export class UserService {
   private http = inject(HttpClient);
   private keycloak = inject(KeycloakService);
   private apiUrl = '/api/users';
+  private tokenService = inject(TokenService);
 
   private getHeaders(): HttpHeaders {
-    const token = this.keycloak.getKeycloakInstance().token;
+    const token = this.tokenService.getToken() 
+      ?? this.keycloak.getKeycloakInstance()?.token 
+      ?? '';
     return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
