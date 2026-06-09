@@ -1,4 +1,8 @@
-<app-navbar />
+@if (isLoginPage()) {
+  <div class="app-brand">Pocket Library</div>
+} @else {
+  <app-navbar />
+}
 
 <main>
   <router-outlet />

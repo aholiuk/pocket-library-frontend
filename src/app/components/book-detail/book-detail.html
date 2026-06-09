@@ -70,7 +70,7 @@
               <p class="success-msg">{{ ratingMessage }}</p>
             }
 
-            @if (isAdmin) {
+            @if (isOwner) {
               <div class="page-divider"></div>
               <div class="admin-row">
                 <a [href]="'/books/' + book.id + '/edit'" class="btn-edit">Edit</a>

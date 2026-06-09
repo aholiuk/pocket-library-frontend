@@ -6,4 +6,5 @@ export interface Book {
   pagesRead?: number;
   progress?: number;
   rating?: number;
+  keycloakId?: string;
 }

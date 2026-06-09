@@ -4,8 +4,8 @@ import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
 import { ReviewService } from '../../services/review.service';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -18,29 +18,29 @@ export class BookDetail implements OnInit {
   private router = inject(Router);
   private bookService = inject(BookService);
   private reviewService = inject(ReviewService);
+  private tokenService = inject(TokenService);
   private cdr = inject(ChangeDetectorRef);
-  private keycloak = inject(KeycloakService);
 
   book: Book | null = null;
   isLoading = true;
-  isAdmin = false;
+  isOwner = false;
   isOpen = false;
 
   newPagesRead: number = 0;
   progressMessage = '';
   ratingMessage = '';
-
   reviews: any[] = [];
   newReviewText = '';
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.isAdmin = this.keycloak.isUserInRole('admin');
+    const currentUserId = this.tokenService.getParsedToken()?.sub ?? '';
 
     this.bookService.getById(id).subscribe({
       next: (data) => {
         this.book = data;
         this.newPagesRead = data.pagesRead ?? 0;
+        this.isOwner = data.keycloakId === currentUserId;
         this.isLoading = false;
         this.cdr.detectChanges();
         setTimeout(() => {
@@ -54,7 +54,6 @@ export class BookDetail implements OnInit {
       }
     });
 
-    // load reviews for this book
     this.reviewService.getByBook(id).subscribe({
       next: (data) => this.reviews = data,
       error: (err) => console.error('Failed to load reviews', err)
