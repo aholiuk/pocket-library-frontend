@@ -3,13 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ReviewService } from '../../services/review.service';
 import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.scss'
 })
