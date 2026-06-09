@@ -30,4 +30,11 @@ export class UserService {
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl, { headers: this.getHeaders() });
   }
+
+  deleteUser(keycloakId: string): Observable<string> {
+  return this.http.delete<string>(`${this.apiUrl}/${keycloakId}`, {
+    headers: this.getHeaders(),
+    responseType: 'text' as 'json'
+  });
+}
 }

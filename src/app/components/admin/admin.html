@@ -19,6 +19,7 @@
             <th>Avatar</th>
             <th>Username</th>
             <th>Keycloak ID</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,13 @@
               </td>
               <td class="username">{{ user.username }}</td>
               <td class="keycloak-id">{{ user.keycloakId }}</td>
+              <td>
+                @if (user.keycloakId !== currentUserId) {
+                  <button class="btn-delete" (click)="deleteUser(user.keycloakId)">
+                    Delete
+                  </button>
+                }
+              </td>
             </tr>
           }
         </tbody>

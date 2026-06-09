@@ -94,3 +94,20 @@
   font-size: 0.85rem;
   font-style: italic;
 }
+
+.btn-delete {
+  background: transparent;
+  border: 1px solid #a03030;
+  color: #a03030;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #a03030;
+    color: white;
+  }
+}
