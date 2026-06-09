@@ -1,25 +1,34 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { BookService } from '../../services/book.service';
+import { ReviewService } from '../../services/review.service';
 import { Book } from '../../models/book.model';
 
 @Component({
   selector: 'app-friend-bookshelf',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './friend-bookshelf.html',
-  styleUrl: './friend-bookshelf.scss',
-  
+  styleUrl: './friend-bookshelf.scss'
 })
 export class FriendBookshelf implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private bookService = inject(BookService);
+  private reviewService = inject(ReviewService);
   private cdr = inject(ChangeDetectorRef);
 
   books: Book[] = [];
   isLoading = true;
   friendId = '';
   friendUsername = '';
+
+  // modal
+  selectedBook: Book | null = null;
+  reviews: any[] = [];
+  newReviewText = '';
+  reviewSuccess = '';
+  reviewError = '';
 
   spineColors = [
     '#356789', '#655D21', '#A07B5F', '#B2DBAF',
@@ -46,6 +55,46 @@ export class FriendBookshelf implements OnInit {
         }
       });
     }, 500);
+  }
+
+  openBook(book: Book): void {
+    this.selectedBook = book;
+    this.newReviewText = '';
+    this.reviewSuccess = '';
+    this.reviewError = '';
+    this.reviews = [];
+
+    this.reviewService.getByBook(book.id!).subscribe({
+      next: (data) => {
+        this.reviews = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Failed to load reviews', err)
+    });
+  }
+
+  closeModal(): void {
+    this.selectedBook = null;
+    this.reviews = [];
+    this.newReviewText = '';
+  }
+
+  postReview(): void {
+    if (!this.selectedBook || !this.newReviewText.trim()) return;
+
+    this.reviewService.create(this.selectedBook.id!, this.newReviewText).subscribe({
+      next: (data) => {
+        this.reviews.push(data);
+        this.newReviewText = '';
+        this.reviewSuccess = 'Review posted!';
+        setTimeout(() => this.reviewSuccess = '', 3000);
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.reviewError = 'Failed to post review.';
+        setTimeout(() => this.reviewError = '', 3000);
+      }
+    });
   }
 
   getSpineColor(index: number): string {
