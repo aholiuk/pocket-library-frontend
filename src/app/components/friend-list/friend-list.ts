@@ -51,7 +51,10 @@ export class FriendList implements OnInit {
   }
 
   searchUser(): void {
-    if (!this.searchUsername.trim()) return;
+    if (!this.searchUsername.trim()) {
+      this.searchError = 'Please enter a username to search.';
+      return;
+    }
     this.searchLoading = true;
     this.searchResult = null;
     this.searchError = '';

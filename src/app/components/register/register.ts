@@ -42,6 +42,12 @@ export class Register {
       return;
     }
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(this.email.trim())) {
+        this.errorMessage = 'Please enter a valid email address.';
+        return;
+      }
+
     this.isLoading = true;
     this.errorMessage = '';
 

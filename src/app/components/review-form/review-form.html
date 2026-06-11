@@ -5,4 +5,7 @@
   [(ngModel)]="newReviewText"
   placeholder="Share your thoughts...">
 </textarea>
+@if (errorMessage) {
+  <p class="error-msg">{{ errorMessage }}</p>
+}
 <button class="btn-save" (click)="postReview()">Post Review</button>

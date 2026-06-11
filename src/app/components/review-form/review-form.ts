@@ -18,8 +18,14 @@ export class ReviewForm {
 
   newReviewText = '';
 
+  errorMessage = '';
+
   postReview(): void {
-    if (!this.newReviewText.trim()) return;
+    if (!this.newReviewText.trim()) {
+      this.errorMessage = 'Please write something before posting.';
+      return;
+    }
+    this.errorMessage = '';
     this.reviewService.create(this.bookId, this.newReviewText).subscribe({
       next: (data) => {
         this.reviewPosted.emit(data);

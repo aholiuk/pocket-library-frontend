@@ -21,6 +21,8 @@
         type="text"
         [(ngModel)]="book.title"
         placeholder="Enter book title"
+        minlength="1"
+        maxlength="255"
       />
     </div>
 
@@ -31,6 +33,8 @@
         type="text"
         [(ngModel)]="book.author"
         placeholder="Enter author name"
+        minlength="1"
+        maxlength="255"
       />
     </div>
 
@@ -42,6 +46,7 @@
         [(ngModel)]="book.totalPages"
         placeholder="Number of pages"
         min="1"
+        max="10000"
       />
     </div>
 

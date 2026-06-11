@@ -16,6 +16,7 @@
     type="text"
     [(ngModel)]="username"
     placeholder="Enter your username"
+    minlength="3"
     (keyup.enter)="login()"
   />
 </div>
@@ -27,6 +28,7 @@
     type="password"
     [(ngModel)]="password"
     placeholder="Enter your password"
+    minlength="3"
     (keyup.enter)="login()"
   />
 </div>

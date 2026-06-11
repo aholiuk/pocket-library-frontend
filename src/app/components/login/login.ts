@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { KeycloakService } from 'keycloak-angular';
 import { TokenService } from '../../services/token.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class Login {
   private router = inject(Router);
   private keycloak = inject(KeycloakService);
   private tokenService = inject(TokenService);
+  private cdr = inject(ChangeDetectorRef);
 
   username = '';
   password = '';
@@ -55,6 +57,7 @@ export class Login {
       error: () => {
         this.errorMessage = 'Invalid username or password.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
