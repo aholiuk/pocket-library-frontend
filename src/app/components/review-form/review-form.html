@@ -1,1 +1,8 @@
-<p>review-form works!</p>
+<div class="page-divider"></div>
+<h3 class="section-title">Write a Review</h3>
+<textarea
+  class="review-input"
+  [(ngModel)]="newReviewText"
+  placeholder="Share your thoughts...">
+</textarea>
+<button class="btn-save" (click)="postReview()">Post Review</button>

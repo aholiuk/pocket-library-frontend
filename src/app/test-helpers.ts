@@ -11,8 +11,8 @@ export const mockKeycloakService = {
 
 export const mockTokenService = {
   getToken: () => 'mock-token',
-  setTokens: () => {},
-  clearTokens: () => {},
+  setTokens: () => { return; },
+  clearTokens: () => { return; },
   isAuthenticated: () => true,
   isAdmin: () => false,
   getUsername: () => 'testuser',

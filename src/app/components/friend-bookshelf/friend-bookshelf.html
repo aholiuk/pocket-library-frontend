@@ -84,22 +84,17 @@
 
         <div class="modal-divider"></div>
 
-        <h3 class="modal-section-title">Write a Review</h3>
+          <h3 class="modal-section-title">Reviews</h3>
+          <app-review-list [reviews]="reviews" />
 
-        <textarea
-          class="review-input"
-          [(ngModel)]="newReviewText"
-          placeholder="Share your thoughts...">
-        </textarea>
+          @if (reviewSuccess) {
+            <p class="success-msg">{{ reviewSuccess }}</p>
+          }
+          @if (reviewError) {
+            <p class="error-msg">{{ reviewError }}</p>
+          }
 
-        @if (reviewSuccess) {
-          <p class="success-msg">{{ reviewSuccess }}</p>
-        }
-        @if (reviewError) {
-          <p class="error-msg">{{ reviewError }}</p>
-        }
-
-        <button class="btn-submit" (click)="postReview()">Post Review</button>
+          <app-review-form [bookId]="selectedBook.id!" (reviewPosted)="onReviewPosted($event)" />
 
       </div>
     </div>

@@ -15,7 +15,7 @@ describe('Register', () => {
   };
 
   const mockTokenService = {
-    setTokens: () => {},
+    setTokens: () => { return; },
     getToken: () => null,
     isAuthenticated: () => false
   };

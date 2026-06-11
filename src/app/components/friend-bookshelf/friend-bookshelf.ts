@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { ReviewService } from '../../services/review.service';
 import { Book } from '../../models/book.model';
+import { Review } from '../../models/review.model';
+import { ReviewList } from '../review-list/review-list';
+import { ReviewForm } from '../review-form/review-form';
 
 @Component({
   selector: 'app-friend-bookshelf',
-  imports: [FormsModule],
+  imports: [FormsModule, ReviewList, ReviewForm],
   templateUrl: './friend-bookshelf.html',
   styleUrl: './friend-bookshelf.scss'
 })
@@ -23,10 +26,8 @@ export class FriendBookshelf implements OnInit {
   friendId = '';
   friendUsername = '';
 
-  // modal
   selectedBook: Book | null = null;
-  reviews: any[] = [];
-  newReviewText = '';
+  reviews: Review[] = [];
   reviewSuccess = '';
   reviewError = '';
 
@@ -59,7 +60,6 @@ export class FriendBookshelf implements OnInit {
 
   openBook(book: Book): void {
     this.selectedBook = book;
-    this.newReviewText = '';
     this.reviewSuccess = '';
     this.reviewError = '';
     this.reviews = [];
@@ -73,28 +73,14 @@ export class FriendBookshelf implements OnInit {
     });
   }
 
+  onReviewPosted(review: Review): void {
+    this.reviews.push(review);
+    this.cdr.detectChanges();
+  }
+
   closeModal(): void {
     this.selectedBook = null;
     this.reviews = [];
-    this.newReviewText = '';
-  }
-
-  postReview(): void {
-    if (!this.selectedBook || !this.newReviewText.trim()) return;
-
-    this.reviewService.create(this.selectedBook.id!, this.newReviewText).subscribe({
-      next: (data) => {
-        this.reviews.push(data);
-        this.newReviewText = '';
-        this.reviewSuccess = 'Review posted!';
-        setTimeout(() => this.reviewSuccess = '', 3000);
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.reviewError = 'Failed to post review.';
-        setTimeout(() => this.reviewError = '', 3000);
-      }
-    });
   }
 
   getSpineColor(index: number): string {

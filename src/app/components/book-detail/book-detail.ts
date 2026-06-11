@@ -2,13 +2,16 @@ import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
+import { Review } from '../../models/review.model';
 import { FormsModule } from '@angular/forms';
 import { ReviewService } from '../../services/review.service';
 import { TokenService } from '../../services/token.service';
+import { ReviewList } from '../review-list/review-list';
+import { ReviewForm } from '../review-form/review-form';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [FormsModule],
+  imports: [FormsModule, ReviewList, ReviewForm],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.scss'
 })
@@ -28,12 +31,12 @@ export class BookDetail implements OnInit {
   newPagesRead = 0;
   progressMessage = '';
   ratingMessage = '';
-  reviews: any[] = [];
+  reviews: Review[] = [];
   newReviewText = '';
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    const currentUserId = this.tokenService.getParsedToken()?.sub ?? '';
+    const currentUserId = (this.tokenService.getParsedToken()?.['sub'] as string) ?? '';
 
     this.bookService.getById(id).subscribe({
       next: (data) => {
@@ -57,6 +60,10 @@ export class BookDetail implements OnInit {
       next: (data) => this.reviews = data,
       error: (err) => console.error('Failed to load reviews', err)
     });
+  }
+
+  onReviewPosted(review: Review): void {
+    this.reviews.push(review);
   }
 
   getStars(): number[] {
@@ -84,17 +91,6 @@ export class BookDetail implements OnInit {
         setTimeout(() => this.progressMessage = '', 3000);
       },
       error: () => this.progressMessage = 'Failed to update progress.'
-    });
-  }
-
-  postReview(): void {
-    if (!this.book || !this.newReviewText.trim()) return;
-    this.reviewService.create(this.book.id!, this.newReviewText).subscribe({
-      next: (data) => {
-        this.reviews.push(data);
-        this.newReviewText = '';
-      },
-      error: (err) => console.error('Failed to post review', err)
     });
   }
 

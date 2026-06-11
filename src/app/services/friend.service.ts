@@ -33,7 +33,7 @@ export class FriendService {
   }
 
   // POST /friends/{friendId} — add a friend by their userId
-  addFriend(friendId: string): Observable<any> {
+  addFriend(friendId: string): Observable<string> {
     return this.http.post(`${this.apiUrl}/${friendId}`, null, {
       headers: this.getHeaders(),
       responseType: 'text'

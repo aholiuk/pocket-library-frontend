@@ -34,7 +34,7 @@ export class TokenService {
     }
   }
 
-  getParsedToken(): any {
+  getParsedToken(): Record<string, unknown> | null {
     const token = this.getToken();
     if (!token) return null;
     try {
@@ -45,11 +45,14 @@ export class TokenService {
   }
 
   getUsername(): string {
-    return this.getParsedToken()?.preferred_username ?? '';
+    const token = this.getParsedToken();
+    return (token?.['preferred_username'] as string) ?? '';
   }
 
   isAdmin(): boolean {
-    const roles = this.getParsedToken()?.resource_access?.['pocket-library']?.roles ?? [];
-    return roles.includes('admin');
+  const token = this.getParsedToken();
+  const resourceAccess = token?.['resource_access'] as Record<string, {roles: string[]}> | undefined;
+  const roles = resourceAccess?.['pocket-library']?.roles ?? [];
+  return roles.includes('admin');
   }
 }

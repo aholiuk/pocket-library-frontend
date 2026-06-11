@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Review } from '../../models/review.model';
 
 @Component({
   selector: 'app-review-list',
   imports: [],
   templateUrl: './review-list.html',
-  styleUrl: './review-list.scss',
+  styleUrl: './review-list.scss'
 })
-export class ReviewList {}
+export class ReviewList {
+  @Input() reviews: Review[] = [];
+}
