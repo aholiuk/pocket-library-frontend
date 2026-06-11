@@ -8,10 +8,11 @@ import { ReviewService } from '../../services/review.service';
 import { TokenService } from '../../services/token.service';
 import { ReviewList } from '../review-list/review-list';
 import { ReviewForm } from '../review-form/review-form';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [FormsModule, ReviewList, ReviewForm],
+  imports: [FormsModule, ReviewList, ReviewForm, DecimalPipe],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.scss'
 })
@@ -64,6 +65,7 @@ export class BookDetail implements OnInit {
 
   onReviewPosted(review: Review): void {
     this.reviews.push(review);
+    this.cdr.detectChanges();
   }
 
   getStars(): number[] {
@@ -74,8 +76,9 @@ export class BookDetail implements OnInit {
     if (!this.book) return;
     this.bookService.rateBook(this.book.id!, star).subscribe({
       next: (data) => {
-        this.book = data;
+        this.book = { ...data };
         this.ratingMessage = 'Rating saved!';
+        this.cdr.detectChanges();
         setTimeout(() => this.ratingMessage = '', 3000);
       },
       error: () => this.ratingMessage = 'Failed to save rating.'
@@ -86,8 +89,9 @@ export class BookDetail implements OnInit {
     if (!this.book) return;
     this.bookService.updatePagesRead(this.book.id!, this.newPagesRead).subscribe({
       next: (data) => {
-        this.book = data;
+        this.book = { ...data };
         this.progressMessage = 'Progress updated!';
+        this.cdr.detectChanges();
         setTimeout(() => this.progressMessage = '', 3000);
       },
       error: () => this.progressMessage = 'Failed to update progress.'

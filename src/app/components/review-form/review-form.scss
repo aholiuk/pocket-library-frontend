@@ -1,0 +1,45 @@
+.section-title {
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  color: #8b4513;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #c4a882;
+}
+
+.review-input {
+  width: 100%;
+  height: 80px;
+  padding: 0.5rem;
+  border: 1px solid #c4a882;
+  border-radius: 4px;
+  background: #efe5cc;
+  color: #2c1810;
+  font-family: 'Georgia', serif;
+  font-size: 0.82rem;
+  resize: none;
+  margin-bottom: 0.5rem;
+
+  &:focus { outline: none; border-color: #8b4513; }
+}
+
+.btn-save {
+  background: #8b4513;
+  color: #f5e6d0;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.8rem;
+  font-family: 'Georgia', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover { background: #6b3410; }
+}
+
+.page-divider {
+  height: 1px;
+  background: #c4a882;
+  margin: 1rem 0;
+}

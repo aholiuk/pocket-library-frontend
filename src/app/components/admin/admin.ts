@@ -19,7 +19,7 @@ export class Admin implements OnInit {
   currentUserId = '';
 
   ngOnInit(): void {
-    this.currentUserId = this.tokenService.getParsedToken()?.sub ?? '';
+    this.currentUserId = (this.tokenService.getParsedToken()?.['sub'] as string) ?? '';
 
     setTimeout(() => {
       this.loadUsers();

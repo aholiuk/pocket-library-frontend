@@ -37,7 +37,7 @@
             <div class="progress-track">
               <div class="progress-fill" [style.width.%]="book.progress"></div>
             </div>
-            <p class="progress-text">{{ book.pagesRead }} / {{ book.totalPages }} pages ({{ book.progress }}%)</p>
+            <p class="progress-text">{{ book.pagesRead }} / {{ book.totalPages }} pages ({{ book.progress | number:'1.0-1' }}%)</p>
 
             <div class="update-row">
               <input
