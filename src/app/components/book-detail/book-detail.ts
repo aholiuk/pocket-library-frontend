@@ -25,7 +25,7 @@ export class BookDetail implements OnInit {
   isOwner = false;
   isOpen = false;
 
-  newPagesRead: number = 0;
+  newPagesRead = 0;
   progressMessage = '';
   ratingMessage = '';
   reviews: any[] = [];

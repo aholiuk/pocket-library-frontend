@@ -13,8 +13,9 @@
 
       <!-- question 1 -->
       <div class="question">
-        <label class="question-label">What was the last book you read?</label>
+        <label class="question-label" for="lastBook">What was the last book you read?</label>
         <input
+          id="lastBook"
           type="text"
           [(ngModel)]="quiz.lastBookRead"
           placeholder="Enter book title"
@@ -23,8 +24,8 @@
 
       <!-- question 2 -->
       <div class="question">
-        <label class="question-label">Did you enjoy it?</label>
-        <div class="toggle-row">
+        <label class="question-label" for="likedBook">Did you enjoy it?</label>
+        <div class="toggle-row" id="likedBook">
           <button
             class="toggle-btn"
             [class.active]="quiz.likedLastBook === true"
@@ -42,8 +43,8 @@
 
       <!-- question 3 -->
       <div class="question">
-        <label class="question-label">What is your favorite genre?</label>
-        <div class="genre-grid">
+        <label class="question-label" for="genre">What is your favorite genre?</label>
+        <div class="genre-grid" id="genre">
           @for (genre of genres; track genre) {
             <button
               class="genre-btn"
