@@ -28,6 +28,16 @@ export class Login {
       return;
     }
 
+    if (this.username.trim().length < 3) {
+      this.errorMessage = 'Username must be at least 3 characters.';
+      return;
+    }
+
+    if (this.password.trim().length < 3) {
+      this.errorMessage = 'Password must be at least 3 characters.';
+      return;
+    }
+
     this.isLoading = true;
     this.errorMessage = '';
 
