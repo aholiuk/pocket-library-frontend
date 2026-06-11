@@ -26,6 +26,9 @@
             (mouseenter)="hoveredBookId = book.id!"
             (mouseleave)="hoveredBookId = null"
             (click)="openBook(book)"
+            (keyup.enter)="openBook(book)"
+            tabindex="0"
+            role="button"
           >
             <span class="spine-title">{{ book.title }}</span>
 
@@ -49,8 +52,15 @@
 
   <!-- modal -->
   @if (selectedBook) {
-    <div class="modal-overlay" (click)="closeModal()">
-      <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-overlay"
+      (click)="closeModal()"
+      (keyup.enter)="closeModal()"
+      tabindex="0"
+      role="button">
+      <div class="modal-card"
+        (click)="$event.stopPropagation()"
+        (keyup.enter)="$event.stopPropagation()"
+        tabindex="0">
 
         <button class="modal-close" (click)="closeModal()">✕</button>
 

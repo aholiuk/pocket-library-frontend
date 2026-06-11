@@ -15,14 +15,17 @@
       <div class="shelf">
         @for (book of books; track book.id; let i = $index) {
           <div
-            class="book-spine"
-            [style.background-color]="getSpineColor(i)"
-            [style.height.px]="getSpineHeight(i)"
-            [style.width.px]="getSpineWidth(book.totalPages)"
-            (mouseenter)="hoveredBookId = book.id!"
-            (mouseleave)="hoveredBookId = null"
-            (click)="openBook(book.id!)"
-          >
+              class="book-spine"
+              [style.background-color]="getSpineColor(i)"
+              [style.height.px]="getSpineHeight(i)"
+              [style.width.px]="getSpineWidth(book.totalPages)"
+              (mouseenter)="hoveredBookId = book.id!"
+              (mouseleave)="hoveredBookId = null"
+              (click)="openBook(book.id!)"
+              (keyup.enter)="openBook(book.id!)"
+              tabindex="0"
+              role="button"
+            >
             <span class="spine-title">{{ book.title }}</span>
 
             @if (hoveredBookId === book.id) {
@@ -45,7 +48,11 @@
         }
 
         @if (isLoggedIn) {
-          <div class="book-spine book-spine--add" (click)="addBook()">
+          <div class="book-spine book-spine--add"
+            (click)="addBook()"
+            (keyup.enter)="addBook()"
+            tabindex="0"
+            role="button">
             <span class="spine-title">+</span>
           </div>
         }

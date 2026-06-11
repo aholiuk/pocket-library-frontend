@@ -62,6 +62,9 @@
                   class="star"
                   [class.filled]="star <= (book.rating ?? 0)"
                   (click)="setRating(star)"
+                  (keyup.enter)="setRating(star)"
+                  tabindex="0"
+                  role="button"
                 >★</span>
               }
             </div>
